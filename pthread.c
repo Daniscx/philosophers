@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pthread.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmaestro <dmaestro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 19:57:40 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/10/11 21:50:20 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/10/16 16:44:07 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@ static void	new_pthread(t_list *pthread_list, t_philo *philo);
 static void	philo_assignation(t_philo *philo, t_checker *checker,
 				pthread_mutex_t *status_door);
 
+static void fork_assignation(t_philo *first_one, t_philo *philo)
+{
+	if(philo)
+		first_one->right_fork = philo->left_fork;
+}
 static void	element_destroyer(t_checker *checker, pthread_mutex_t *status_door)
 {
 	pthread_mutex_destroy(status_door);
@@ -31,9 +36,9 @@ void	init_the_threads(t_ttime time, int pnb)
 	t_list			*pthreads_list;
 	pthread_mutex_t	*status_door;
 	t_philo			*first_one;
-
+	
+	philo = NULL;
 	checker = init_checker(pnb);
-	table(pnb, NULL, init_timeval());
 	pthreads_list = init_list(pnb);
 	status_door = init_mutext();
 	first_one = init_philos(time, pnb);
@@ -46,10 +51,10 @@ void	init_the_threads(t_ttime time, int pnb)
 		new_pthread(pthreads_list, philo);
 		pnb--;
 	}
-	first_one->right_fork = philo->left_fork;
+	fork_assignation(first_one, philo);
 	new_pthread(pthreads_list, first_one);
 	list_destroyer(pthreads_list);
-	table(0, NULL, init_timeval());
+	table(0, NULL);
 	element_destroyer(checker, status_door);
 }
 

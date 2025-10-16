@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pilosophers.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmaestro <dmaestro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 20:54:25 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/10/15 19:12:13 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/10/16 16:43:31 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	main(int args, char **argv)
 	if (pnb <= 0)
 		error_manager(("It have to be for least 1 philosopher "));
 	time = init_time(argv);
+	table(pnb, NULL);
 	init_the_threads(time, pnb);
 	return (0);
 }
@@ -55,23 +56,20 @@ t_ttime	init_time(char **argv)
 void	*philos(void *pn)
 {
 	t_philo			*philo;
-	struct timeval	first_one;
 
 	philo = (t_philo *)pn;
-	gettimeofday(&first_one, NULL);
-	only_one_philo_routine(philo, first_one);
+	gettimeofday(&(philo->since_Eat), NULL);
+	only_one_philo_routine(philo, philo->since_Eat);
 	while (1)
 	{
-		while (table(philo->nbph, philo, first_one) != 0)
+		while (table(philo->nbph, philo) != 0)
 		{
-			if (action_protection(first_one, philo, NULL) == 1)
+			if (action_protection(philo->since_Eat, philo, NULL) == 1)
 				destroy_philo(philo);
-			usleep(100);
 		}
-		gettimeofday(&first_one, NULL);
-		if (action_protection(first_one, philo, "is thinking") == 1)
+		if (action_protection(philo->since_Eat, philo, "is thinking") == 1)
 			destroy_philo(philo);
-		if (action_protection(first_one, philo, "is sleeping") == 1)
+		if (action_protection(philo->since_Eat, philo, "is sleeping") == 1)
 			destroy_philo(philo);
 		usleep(philo->time.time_sleep * 1000L);
 	}

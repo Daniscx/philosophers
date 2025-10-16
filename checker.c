@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   checker.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmaestro <dmaestro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 21:18:53 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/10/15 19:17:48 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/10/16 05:30:27 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	action_checker(struct timeval first_one, t_philo *pn, char *messsage)
+int		action_checker(struct timeval first_one, t_philo *pn, char *messsage)
 {
 	struct timeval	another_one;
 
@@ -55,5 +55,9 @@ void	eat_left(t_philo *philo, int i)
 		pthread_mutex_unlock(philo->status_door);
 	}
 	else if (i == 0)
-	 printf("hola");
+	{
+		gettimeofday(&(philo->since_Eat), NULL);
+		usleep(philo->time.time_to_eat * 1000L);
+	}
+	 
 }
