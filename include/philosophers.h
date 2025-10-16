@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
+/*   By: dmaestro <dmaestro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 20:56:36 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/10/16 05:04:36 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/10/16 19:16:02 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef struct philo_s
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*status_door;
 	t_checker		*checker;
-	struct timeval since_Eat;
+	struct timeval	since_eat;
 
 }					t_philo;
 
@@ -64,18 +64,17 @@ int					action_protection(struct timeval first_one, t_philo *pn,
 						char *message);
 int					another_died(t_philo *philo);
 int					some_one_is_dead(t_philo *pnb);
-void				eat_left(t_philo *philo, int i);
+int				eat_left(t_philo *philo, int i);
 t_checker			*init_checker(int pnb);
-struct timeval		init_timeval(void);
+struct timeval		init_timeval(int i);
 void				forks_creator(t_philo *philo);
 t_checker			*init_checker(int pnb);
-int					eating_for_unpair(int *table, int phnb, t_philo *philo);
-int					eating_for_pair(int *table, int phnb, t_philo *philo);
-int					fork_for_max(int *table, int phnb, t_philo *philo);
+int					eating_for_unpair(t_philo *philo);
+int					eating_for_pair(t_philo *philo);
+int					fork_for_max(t_philo *philo);
 void				only_one_philo_routine(t_philo *philo,
 						struct timeval since_eat);
-int					taking_fork(int *table, int phb, struct timeval since_eat,
-						t_philo *philo);
+int					taking_fork( struct timeval since_eat, t_philo *philo);
 void				release_fork(int *table, int phnb);
 void				destroy_philo(t_philo *philo);
 

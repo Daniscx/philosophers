@@ -6,17 +6,18 @@
 /*   By: dmaestro <dmaestro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 21:25:25 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/10/15 18:40:48 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/10/16 17:21:39 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-struct timeval	init_timeval(void)
+struct timeval	init_timeval(int bool)
 {
-	struct timeval	result;
+	static struct timeval	result;
 
-	gettimeofday(&result, NULL);
+	if (bool == 1)
+		gettimeofday(&result, NULL);
 	return (result);
 }
 

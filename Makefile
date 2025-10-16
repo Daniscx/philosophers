@@ -2,7 +2,7 @@
 NAME = Philosophers
 
 CC = cc 
-CFLAGS = -I include/ -Wall -Werror -Wextra -g -pthread
+CFLAGS = -I include/ -Wall -Werror -Wextra -g3  -pthread
 SRC = 	pilosophers.c  utils.c pthread.c list.c forks.c general_init.c eating_routine.c checker.c
 OBJECTS = $(SRC:.c=.o)
 

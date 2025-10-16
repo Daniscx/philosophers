@@ -3,19 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   pilosophers.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
+/*   By: dmaestro <dmaestro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 20:54:25 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/10/16 16:43:31 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/10/16 20:26:40 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	forks(t_philo *philo, struct timeval time_since_eat);
-void	position_fork(int pnb, int *left, int *right, int max);
-t_ttime	init_time(char **argv);
-void	destroy_philo(t_philo *philo);
+
+static t_ttime	init_time(char **argv);
 
 int	main(int args, char **argv)
 {
@@ -28,7 +26,7 @@ int	main(int args, char **argv)
 	if (pnb <= 0)
 		error_manager(("It have to be for least 1 philosopher "));
 	time = init_time(argv);
-	table(pnb, NULL);
+	init_timeval(1);
 	init_the_threads(time, pnb);
 	return (0);
 }
@@ -57,19 +55,20 @@ void	*philos(void *pn)
 {
 	t_philo			*philo;
 
+	
 	philo = (t_philo *)pn;
-	gettimeofday(&(philo->since_Eat), NULL);
-	only_one_philo_routine(philo, philo->since_Eat);
+	 
+	gettimeofday(&(philo->since_eat), NULL);
+	only_one_philo_routine(philo, philo->since_eat);
 	while (1)
 	{
-		while (table(philo->nbph, philo) != 0)
-		{
-			if (action_protection(philo->since_Eat, philo, NULL) == 1)
-				destroy_philo(philo);
-		}
-		if (action_protection(philo->since_Eat, philo, "is thinking") == 1)
+		if(table(philo->nbph, philo) == 1)
 			destroy_philo(philo);
-		if (action_protection(philo->since_Eat, philo, "is sleeping") == 1)
+		if (action_protection(philo->since_eat, philo, "is thinking") == 1)
+			destroy_philo(philo);
+		if (philo->nbph % 2 != 0)
+    		usleep(100000);
+		if (action_protection(philo->since_eat, philo, "is sleeping") == 1)
 			destroy_philo(philo);
 		usleep(philo->time.time_sleep * 1000L);
 	}
@@ -81,7 +80,7 @@ void	destroy_philo(t_philo *philo)
 	pthread_exit(0);
 }
 
-t_philo	*init_philos(t_ttime asignation, int nbph)
+ t_philo	*init_philos(t_ttime asignation, int nbph)
 {
 	t_philo	*aux;
 
