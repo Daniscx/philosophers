@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmaestro <dmaestro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 19:57:25 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/10/15 18:10:14 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/10/21 19:53:22 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	add_element_to_list(t_list *list, t_node *new_element,
 	list->size++;
 }
 
-t_node	*create_new_node(pthread_t *pthread)
+t_node	*create_new_node(pthread_t *pthread, t_philo *philo)
 {
 	t_node	*result;
 
@@ -70,6 +70,7 @@ t_node	*create_new_node(pthread_t *pthread)
 	result = malloc(sizeof(t_node));
 	result->next = NULL;
 	result->thread = pthread;
+	result->philo = philo;
 	return (result);
 }
 
@@ -84,6 +85,7 @@ static void	phtread_destroyer(t_node *head)
 		next_aux = aux->next;
 		pthread_join(*aux->thread, NULL);
 		free(aux->thread);
+		free(aux->philo);
 		free(aux);
 		aux = next_aux;
 	}

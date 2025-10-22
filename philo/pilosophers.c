@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pilosophers.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmaestro <dmaestro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 20:54:25 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/10/16 20:26:40 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/10/21 19:16:21 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,28 +57,25 @@ void	*philos(void *pn)
 
 	
 	philo = (t_philo *)pn;
-	 
 	gettimeofday(&(philo->since_eat), NULL);
-	only_one_philo_routine(philo, philo->since_eat);
+	if (philo->nbph % 2 != 0)
+    	usleep(5000);
+	only_one_philo_routine(philo);
 	while (1)
 	{
 		if(table(philo->nbph, philo) == 1)
-			destroy_philo(philo);
-		if (action_protection(philo->since_eat, philo, "is thinking") == 1)
-			destroy_philo(philo);
-		if (philo->nbph % 2 != 0)
-    		usleep(100000);
-		if (action_protection(philo->since_eat, philo, "is sleeping") == 1)
-			destroy_philo(philo);
-		usleep(philo->time.time_sleep * 1000L);
+			pthread_exit(0);
+		if (action_protection(philo, "is thinking") == 1)
+			pthread_exit(0);
+		if (action_protection(philo, "is sleeping") == 1)
+			pthread_exit(0);
+		usleep_better(philo, philo->time.time_sleep * 1000L);
+		if (action_protection(philo, NULL) == 1)
+			pthread_exit(0);
 	}
 }
 
-void	destroy_philo(t_philo *philo)
-{
-	free(philo);
-	pthread_exit(0);
-}
+
 
  t_philo	*init_philos(t_ttime asignation, int nbph)
 {

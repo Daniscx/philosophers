@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmaestro <dmaestro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 20:56:36 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/10/16 19:16:02 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/10/21 19:19:07 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,19 +50,17 @@ typedef struct philo_s
 	struct timeval	since_eat;
 
 }					t_philo;
+typedef struct list_s t_list;
 
 int					ft_atoi(char *nb);
 void				error_manager(char *error);
 t_philo				*init_philos(t_ttime asignation, int nbph);
 void				*philos(void *pn);
-int					action_checker(struct timeval first_one, t_philo *pn,
-						char *messsage);
+int					action_checker_for_actions(t_philo *pn, char *messsage);
 int					table(int phnb, t_philo *philo);
 long				get_timestamp_in_ms(struct timeval start,
 						struct timeval current);
-int					action_protection(struct timeval first_one, t_philo *pn,
-						char *message);
-int					another_died(t_philo *philo);
+int					action_protection_for_all(struct timeval first_one, t_philo *pn);
 int					some_one_is_dead(t_philo *pnb);
 int				eat_left(t_philo *philo, int i);
 t_checker			*init_checker(int pnb);
@@ -72,10 +70,14 @@ t_checker			*init_checker(int pnb);
 int					eating_for_unpair(t_philo *philo);
 int					eating_for_pair(t_philo *philo);
 int					fork_for_max(t_philo *philo);
-void				only_one_philo_routine(t_philo *philo,
-						struct timeval since_eat);
-int					taking_fork( struct timeval since_eat, t_philo *philo);
+void				only_one_philo_routine(t_philo *philo);
+int					taking_fork( t_philo *philo);
 void				release_fork(int *table, int phnb);
-void				destroy_philo(t_philo *philo);
+void				usleep_better(t_philo * philo,long int time);
+int					action_checker_for_dead(struct timeval first_one, t_philo *pn);
+int	action_protection(t_philo *pn, char *message);
+void dead_checker(t_list *list);
+
+
 
 #endif

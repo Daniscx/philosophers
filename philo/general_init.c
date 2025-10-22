@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general_init.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmaestro <dmaestro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 21:25:25 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/10/16 17:21:39 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/10/21 19:13:13 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,24 @@ t_checker	*init_checker(int pnb)
 	result->left_to_check = pnb;
 	result->someone_is_dead = LIVE;
 	return (result);
+}
+void dead_checker(t_list *list)
+{
+	t_node *aux;
+	int i;
+	i = 0;
+	usleep(5200);
+	while(1)
+	{
+		aux = list->head;
+		while(aux != NULL)
+		{
+			i = action_protection_for_all(aux->philo->since_eat, aux->philo);
+			aux = aux->next;
+			if(i == 1)
+				break;
+		}
+		if(i == 1)
+			break;
+	}
 }

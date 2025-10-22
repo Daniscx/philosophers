@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pthread.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmaestro <dmaestro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 19:57:40 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/10/16 19:22:01 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/10/21 18:50:12 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	init_the_threads(t_ttime time, int pnb)
 	}
 	fork_assignation(first_one, philo);
 	new_pthread(pthreads_list, first_one);
+	dead_checker(pthreads_list);
 	list_destroyer(pthreads_list);
 	element_destroyer(checker, status_door);
 }
@@ -65,7 +66,7 @@ static void	new_pthread(t_list *pthread_list, t_philo *philo)
 	new_thread_to_add_to_the_list = malloc(sizeof(pthread_t));
 	pthread_create(new_thread_to_add_to_the_list, NULL, philos, philo);
 	add_element_to_list(pthread_list,
-		create_new_node(new_thread_to_add_to_the_list),
+		create_new_node(new_thread_to_add_to_the_list, philo),
 		philo->left_fork);
 }
 
